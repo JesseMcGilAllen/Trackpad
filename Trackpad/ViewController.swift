@@ -7,11 +7,26 @@
 //
 
 import UIKit
+import CoreBluetooth
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CBPeripheralManagerDelegate {
+    
 
+    var peripheralManager : CBPeripheralManager!
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        
+
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -19,6 +34,12 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
+        println("State: \(peripheral.state.rawValue)")
+    }
+    
+    
 
 
 }
