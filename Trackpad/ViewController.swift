@@ -12,9 +12,10 @@ import CoreBluetooth
 class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
 
-    var peripheralManager : CBPeripheralManager!
+    let peripheralManager : CBPeripheralManager!
     
     required init(coder aDecoder: NSCoder) {
+        peripheralManager = CBPeripheralManager()
         super.init(coder: aDecoder)
         
         
@@ -23,7 +24,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        peripheralManager.delegate = self
         
         
         
