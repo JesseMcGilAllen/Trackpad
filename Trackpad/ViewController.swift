@@ -12,10 +12,9 @@ import CoreBluetooth
 class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
 
-    let peripheralManager : CBPeripheralManager!
+    var peripheralManager : CBPeripheralManager!
     
     required init(coder aDecoder: NSCoder) {
-        peripheralManager = CBPeripheralManager()
         super.init(coder: aDecoder)
         
         
@@ -24,11 +23,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        peripheralManager.delegate = self
+        peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+       
         
-        
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,9 +34,53 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     }
     
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
-        println("State: \(peripheral.state.rawValue)")
+        
+        if peripheral.state == .PoweredOn {
+            
+            peripheralManager.addService(trackpadService())
+        } else {
+            println("State: \(peripheral.state)")
+        }
     }
     
+    func trackpadService() -> CBMutableService {
+        
+        println("Trackpad")
+        let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
+        var trackpadService = CBMutableService(type: trackpadServiceUUID, primary: true)
+        
+        trackpadService.characteristics = [trackingCharacteristic()]
+        
+        return trackpadService
+    }
+    
+    func trackingCharacteristic() -> CBMutableCharacteristic {
+        
+        println("Tracking")
+        let trackingCharacteristicUUID = CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
+        let trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID,
+                                                             properties: CBCharacteristicProperties.Read,
+                                                             value: nil,
+                                                             permissions: CBAttributePermissions.Readable)
+        
+        return trackingCharacteristic
+        
+    }
+    
+    func peripheralManager(peripheral: CBPeripheralManager!, didAddService service: CBService!, error: NSError!) {
+        
+        if error != nil {
+            println("Error publishing service: \(error.localizedDescription)")
+        }
+        
+    }
+    
+    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
+        
+        if error != nil {
+            println("Error advertsing service: \(error.localizedDescription)")
+        }
+    }
     
 
 
