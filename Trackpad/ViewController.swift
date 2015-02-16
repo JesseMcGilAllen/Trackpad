@@ -63,9 +63,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         println("Tracking")
         let trackingCharacteristicUUID = CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
         let trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID,
-                                                             properties: CBCharacteristicProperties.Read & CBCharacteristicProperties.Notify,
+                                                             properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
                                                              value: nil,
-                                                             permissions: CBAttributePermissions.Readable)
+                                                             permissions: CBAttributePermissions.ReadEncryptionRequired)
         
         return trackingCharacteristic
         
@@ -85,6 +85,11 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         if error != nil {
             println("Error advertising service: \(error.localizedDescription)")
         }
+    }
+    
+    func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
+        
+        println("Central subscribed to characteristic: \(characteristic)")
     }
     
     
