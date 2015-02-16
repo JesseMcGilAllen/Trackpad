@@ -11,7 +11,7 @@ import CoreBluetooth
 
 class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
-
+    let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
     var peripheralManager : CBPeripheralManager!
     
     required init(coder aDecoder: NSCoder) {
@@ -38,7 +38,11 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         if peripheral.state == .PoweredOn {
             
             peripheralManager.addService(trackpadService())
+    
+            peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey : [trackpadServiceUUID]])
+            
         } else {
+            
             println("State: \(peripheral.state)")
         }
     }
@@ -46,7 +50,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     func trackpadService() -> CBMutableService {
         
         println("Trackpad")
-        let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
+        
         var trackpadService = CBMutableService(type: trackpadServiceUUID, primary: true)
         
         trackpadService.characteristics = [trackingCharacteristic()]
@@ -59,7 +63,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         println("Tracking")
         let trackingCharacteristicUUID = CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
         let trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID,
-                                                             properties: CBCharacteristicProperties.Read,
+                                                             properties: CBCharacteristicProperties.Read & CBCharacteristicProperties.Notify,
                                                              value: nil,
                                                              permissions: CBAttributePermissions.Readable)
         
@@ -77,10 +81,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
         
+        println("Advertising")
         if error != nil {
             println("Error advertsing service: \(error.localizedDescription)")
         }
     }
+    
     
 
 
