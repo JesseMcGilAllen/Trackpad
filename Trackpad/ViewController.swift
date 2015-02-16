@@ -83,7 +83,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         println("Advertising")
         if error != nil {
-            println("Error advertsing service: \(error.localizedDescription)")
+            println("Error advertising service: \(error.localizedDescription)")
         }
     }
     
