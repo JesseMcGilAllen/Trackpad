@@ -13,6 +13,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
     var peripheralManager : CBPeripheralManager!
+    var characteristic: CBMutableCharacteristic!
+
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -53,6 +55,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         var trackpadService = CBMutableService(type: trackpadServiceUUID, primary: true)
         
+        characteristic = trackingCharacteristic()
+        
         trackpadService.characteristics = [trackingCharacteristic()]
         
         return trackpadService
@@ -92,8 +96,29 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         println("Central subscribed to characteristic: \(characteristic)")
     }
     
-    
+    @IBAction func panDetected(sender: AnyObject) {
+        
+        let translation = sender.translationInView(self.view.superview!)
+        println("Translation: \(translation)")
+        
+        let location = sender.locationInView(self.view)
+        
+        let translationArray = [translation.x, translation.y]
+        
+      var updatedData = NSKeyedArchiver.archivedDataWithRootObject(translationArray)
+   
+       let didSendValue = peripheralManager.updateValue(updatedData, forCharacteristic: characteristic, onSubscribedCentrals: nil)
+        
+        
+        
+        
+        
+        
+        
 
+    }
+    
+    
 
 }
 
