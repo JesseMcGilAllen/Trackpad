@@ -13,6 +13,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
     var peripheralManager : CBPeripheralManager!
+    var isCentralReady = false
+    var subscribedCentrals = [CBCentral]()
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -87,10 +89,25 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
         
         println("Central subscribed to characteristic: \(characteristic)")
+        isCentralReady = true
+        subscribedCentrals.append(central)
+        
+       testConnection()
 
     }
     
-    @IBAction func panDetected(sender: AnyObject) {
+    func testConnection() {
+        var test = "Hello World"
+        
+        let testData = test.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) as NSData!
+        let characteristic = trackingCharacteristic()
+        
+        let didSendValue = peripheralManager.updateValue(testData!, forCharacteristic: characteristic, onSubscribedCentrals: nil)
+        println("Sent?: \(didSendValue)")
+
+    }
+    
+    @IBAction func panDetected(sender: UIPanGestureRecognizer) {
         
         let translation = sender.translationInView(self.view.superview!)
         
@@ -100,10 +117,20 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         let characteristic = trackingCharacteristic()
         
       var updatedData = NSKeyedArchiver.archivedDataWithRootObject(translationArray)
-   
-       let didSendValue = peripheralManager.updateValue(updatedData, forCharacteristic: characteristic, onSubscribedCentrals: nil)
         
-        println("Sent?: \(didSendValue)")
+        // println(updatedData)
+        
+        if isCentralReady {
+            
+           characteristic.value = updatedData
+           let didSendValue = peripheralManager.updateValue(updatedData, forCharacteristic: characteristic, onSubscribedCentrals: subscribedCentrals)
+            println("Sent?: \(didSendValue)")
+            // println(characteristic.value)
+
+        }
+   
+       
+        
         
     }
     
