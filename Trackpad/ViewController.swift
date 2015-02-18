@@ -13,8 +13,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
     var peripheralManager : CBPeripheralManager!
-    var characteristic: CBMutableCharacteristic!
-
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -51,11 +49,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func trackpadService() -> CBMutableService {
         
-        println("Trackpad")
         
         var trackpadService = CBMutableService(type: trackpadServiceUUID, primary: true)
-        
-        characteristic = trackingCharacteristic()
         
         trackpadService.characteristics = [trackingCharacteristic()]
         
@@ -64,7 +59,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func trackingCharacteristic() -> CBMutableCharacteristic {
         
-        println("Tracking")
         let trackingCharacteristicUUID = CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
         let trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID,
                                                              properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
@@ -85,7 +79,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!) {
         
-        println("Advertising")
         if error != nil {
             println("Error advertising service: \(error.localizedDescription)")
         }
@@ -94,28 +87,24 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
         
         println("Central subscribed to characteristic: \(characteristic)")
+
     }
     
     @IBAction func panDetected(sender: AnyObject) {
         
         let translation = sender.translationInView(self.view.superview!)
-        println("Translation: \(translation)")
         
         let location = sender.locationInView(self.view)
         
         let translationArray = [translation.x, translation.y]
+        let characteristic = trackingCharacteristic()
         
       var updatedData = NSKeyedArchiver.archivedDataWithRootObject(translationArray)
    
        let didSendValue = peripheralManager.updateValue(updatedData, forCharacteristic: characteristic, onSubscribedCentrals: nil)
         
+        println("Sent?: \(didSendValue)")
         
-        
-        
-        
-        
-        
-
     }
     
     
