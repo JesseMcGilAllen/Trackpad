@@ -24,9 +24,14 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         super.viewDidLoad()
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-       
+        
         
     }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -71,12 +76,10 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func instantiateTrackingCharacteristic() {
         
-        
         trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID(),
                                                              properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
                                                              value: nil,
                                                              permissions: CBAttributePermissions.ReadEncryptionRequired)
-        
         
     }
     
@@ -113,8 +116,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         var locationString = NSStringFromCGPoint(location)
         var data = locationString.dataUsingEncoding(NSUTF8StringEncoding)
         
-         trackingCharacteristic.value = data
-         let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
+        let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
         
         println("Sent?: \(didSendValue)")
    
