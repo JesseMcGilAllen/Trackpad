@@ -11,19 +11,15 @@ import CoreBluetooth
 
 class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
-    let trackpadServiceUUID = CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
     var peripheralManager : CBPeripheralManager!
-    var isCentralReady = false
-    var subscribedCentrals = [CBCentral]()
     var trackingCharacteristic : CBMutableCharacteristic!
-    var savedScale : CGFloat = 1.0
+    
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        
 
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,13 +33,15 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: Required to conform to CBPeripheralManagerDelegate Protocol
+    
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
         
         if peripheral.state == .PoweredOn {
             
             peripheralManager.addService(trackpadService())
     
-            peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey : [trackpadServiceUUID]])
+            peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey : [trackpadServiceUUID()]])
             
         } else {
             
@@ -51,27 +49,38 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         }
     }
     
+    // MARK: Services & Characteristics
+    
+    func trackpadServiceUUID() -> CBUUID {
+        return CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
+    }
+    
     func trackpadService() -> CBMutableService {
         
         
-        var trackpadService = CBMutableService(type: trackpadServiceUUID, primary: true)
+        var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
         instantiateTrackingCharacteristic()
         trackpadService.characteristics = [trackingCharacteristic]
         
         return trackpadService
     }
     
-    func instantiateTrackingCharacteristic() -> CBMutableCharacteristic {
+    func trackingCharacteristicUUID() -> CBUUID {
+        return CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
+    }
+    
+    func instantiateTrackingCharacteristic() {
         
-        let trackingCharacteristicUUID = CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
-        trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID,
+        
+        trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID(),
                                                              properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
                                                              value: nil,
-                                                             permissions: CBAttributePermissions.Readable)
+                                                             permissions: CBAttributePermissions.ReadEncryptionRequired)
         
-        return trackingCharacteristic
         
     }
+    
+    // MARK: Peripheral Manager
     
     func peripheralManager(peripheral: CBPeripheralManager!, didAddService service: CBService!, error: NSError!) {
         
@@ -91,78 +100,25 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     func peripheralManager(peripheral: CBPeripheralManager!, central: CBCentral!, didSubscribeToCharacteristic characteristic: CBCharacteristic!) {
         
         println("Central subscribed to characteristic: \(characteristic)")
-        isCentralReady = true
-        subscribedCentrals.append(central)
-       println(central.maximumUpdateValueLength)
-        
-        testConnection()
+        println(central.maximumUpdateValueLength)
 
     }
     
-    func testConnection() {
-        var test = "Hello World"
-        
-        // let testData = test.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) as NSData!
-        
-        // characteristic.value = testData
-        
-        let characteristic = trackingCharacteristic
-        
-        let data = NSData(bytes: &test, length: sizeofValue(test))
-        println("Bytes: \(data.length)")
-        let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
-        println("Sent?: \(didSendValue)")
-        
-        //println(characteristic.value)
-       
-        
-//        if let testString = NSString(data: characteristic.value, encoding: NSUTF8StringEncoding) as NSString! {
-//            println(testString)
-//        }
-
-    }
+    // MARK: Gestures
     
     @IBAction func panDetected(sender: UIPanGestureRecognizer) {
         
-        //var translation = sender.translationInView(self.view.superview!)
-        
         var location = sender.locationInView(self.view)
-        
-        
-        //let translationArray = [translation.x, translation.y]
-        // let characteristic = trackingCharacteristic
-        
-        // var updatedData = NSKeyedArchiver.archivedDataWithRootObject(translationArray)
-        //var pairToSend = (Double(location.x), Double(location.y))
+    
         var locationString = NSStringFromCGPoint(location)
         var data = locationString.dataUsingEncoding(NSUTF8StringEncoding)
-        // println(
-        //var data = NSData(bytes: &location, length: sizeofValue(pairToSend))
         
          trackingCharacteristic.value = data
-           let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
-        //println("Bytes: \(data.length)")
-           println("Sent?: \(didSendValue)")
-        // println(trackingCharacteristic.value)
+         let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
         
-        // var receivedPair = UnsafePointer<CGPoint>(data.bytes).memory
-        // println(receivedPair)
-        
-    
-
-        //  }
+        println("Sent?: \(didSendValue)")
    
     }
     
-    func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager!) {
-        println("Ready!")
-        isCentralReady = true
-
-        
-        testConnection()
-    }
-    
-    
-
 }
 
