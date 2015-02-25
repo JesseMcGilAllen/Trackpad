@@ -16,6 +16,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var isCentralReady = false
     var subscribedCentrals = [CBCentral]()
     var trackingCharacteristic : CBMutableCharacteristic!
+    var savedScale : CGFloat = 1.0
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -112,7 +113,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
         println("Sent?: \(didSendValue)")
         
-        println(characteristic.value)
+        //println(characteristic.value)
+       
         
 //        if let testString = NSString(data: characteristic.value, encoding: NSUTF8StringEncoding) as NSString! {
 //            println(testString)
@@ -122,27 +124,31 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     @IBAction func panDetected(sender: UIPanGestureRecognizer) {
         
-        var translation = sender.translationInView(self.view.superview!)
+        //var translation = sender.translationInView(self.view.superview!)
         
-        let location = sender.locationInView(self.view)
+        var location = sender.locationInView(self.view)
         
-        let translationArray = [translation.x, translation.y]
-        let characteristic = trackingCharacteristic
+        
+        //let translationArray = [translation.x, translation.y]
+        // let characteristic = trackingCharacteristic
         
         // var updatedData = NSKeyedArchiver.archivedDataWithRootObject(translationArray)
-        let pairToSend = (Double(translation.x), Double(translation.y))
-        let data = NSData(bytes: &translation, length: sizeofValue(pairToSend))
-        // println(updatedData)
+        //var pairToSend = (Double(location.x), Double(location.y))
+        var locationString = NSStringFromCGPoint(location)
+        var data = locationString.dataUsingEncoding(NSUTF8StringEncoding)
+        // println(
+        //var data = NSData(bytes: &location, length: sizeofValue(pairToSend))
         
-        //if isCentralReady {
-        
-
-            
-        characteristic.value = data
+         trackingCharacteristic.value = data
            let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
-           println("Bytes: \(data.length)")
+        //println("Bytes: \(data.length)")
            println("Sent?: \(didSendValue)")
-           println(characteristic.value)
+        // println(trackingCharacteristic.value)
+        
+        // var receivedPair = UnsafePointer<CGPoint>(data.bytes).memory
+        // println(receivedPair)
+        
+    
 
         //  }
    
