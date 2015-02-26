@@ -12,6 +12,8 @@ import CoreBluetooth
 class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     var peripheralManager : CBPeripheralManager!
+    
+    var beginTrackingCharacteristic : CBMutableCharacteristic!
     var trackingCharacteristic : CBMutableCharacteristic!
     var screenSizeCharacteristic : CBMutableCharacteristic!
     
@@ -70,6 +72,17 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         trackpadService.characteristics = [screenSizeCharacteristic, trackingCharacteristic]
         
         return trackpadService
+    }
+    
+    func beginTrackingCharacteristicUUID() -> CBUUID {
+        return CBUUID(string: "E0A13890-5CAB-4763-863C-B639132CE144")
+    }
+    
+    func instantiateBeginTrackingCharacteristic() {
+        
+        beginTrackingCharacteristic = CBMutableCharacteristic(type: beginTrackingCharacteristicUUID(),
+            properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
+            value: nil, permissions: CBAttributePermissions.ReadEncryptionRequired)
     }
     
     func trackingCharacteristicUUID() -> CBUUID {
@@ -141,7 +154,17 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         var locationString = NSStringFromCGPoint(location)
         var data = locationString.dataUsingEncoding(NSUTF8StringEncoding)
         
-        let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
+        if sender.state == .Began {
+            
+            let didSendValue = peripheralManager.updateValue(data, forCharacteristic: beginTrackingCharacteristic, onSubscribedCentrals: nil)
+            
+        } else {
+            
+            let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
+            
+        }
+        
+        
         
            
     }
