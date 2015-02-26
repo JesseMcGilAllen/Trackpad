@@ -13,6 +13,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     var peripheralManager : CBPeripheralManager!
     var trackingCharacteristic : CBMutableCharacteristic!
+    var screenSizeCharacteristic : CBMutableCharacteristic!
     
     
     required init(coder aDecoder: NSCoder) {
@@ -65,7 +66,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
         instantiateTrackingCharacteristic()
-        trackpadService.characteristics = [trackingCharacteristic]
+        instantiateScreenSizeCharacteristic()
+        trackpadService.characteristics = [trackingCharacteristic, screenSizeCharacteristic]
         
         return trackpadService
     }
@@ -80,6 +82,29 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
                                                              properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
                                                              value: nil,
                                                              permissions: CBAttributePermissions.ReadEncryptionRequired)
+        
+    }
+    
+    func screenSizeCharacteristicUUID() -> CBUUID {
+        return CBUUID(string: "92241F88-3A7E-4DEA-8DE5-12066D690250")
+    }
+    
+    func instantiateScreenSizeCharacteristic() {
+        
+        screenSizeCharacteristic = CBMutableCharacteristic(type: screenSizeCharacteristicUUID(),
+                                                           properties: CBCharacteristicProperties.Read,
+                                                           value: screenSizeData(),
+                                                           permissions: CBAttributePermissions.ReadEncryptionRequired)
+
+
+    }
+    
+    func screenSizeData() -> NSData {
+        
+        let screenRect = UIScreen.mainScreen().bounds
+        let screenString = NSStringFromCGRect(screenRect)
+        
+        return screenString.dataUsingEncoding(NSUTF8StringEncoding)!
         
     }
     
