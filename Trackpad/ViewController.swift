@@ -69,7 +69,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
         instantiateTrackingCharacteristic()
         instantiateScreenSizeCharacteristic()
-        trackpadService.characteristics = [screenSizeCharacteristic, trackingCharacteristic]
+        instantiateBeginTrackingCharacteristic()
+        trackpadService.characteristics = [screenSizeCharacteristic, beginTrackingCharacteristic, trackingCharacteristic]
         
         return trackpadService
     }
