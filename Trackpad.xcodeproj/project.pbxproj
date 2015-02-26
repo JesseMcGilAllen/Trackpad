@@ -13,6 +13,8 @@
 		377189851A8C481F00D6FA23 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 377189841A8C481F00D6FA23 /* Images.xcassets */; };
 		377189881A8C481F00D6FA23 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 377189861A8C481F00D6FA23 /* LaunchScreen.xib */; };
 		377189941A8C481F00D6FA23 /* TrackpadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 377189931A8C481F00D6FA23 /* TrackpadTests.swift */; };
+		37B9E2171A9E966D007169F4 /* QTouchposeApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B9E2161A9E966D007169F4 /* QTouchposeApplication.m */; };
+		37B9E21A1A9E9788007169F4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B9E2191A9E9788007169F4 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,10 @@
 		3771898D1A8C481F00D6FA23 /* TrackpadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackpadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		377189921A8C481F00D6FA23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		377189931A8C481F00D6FA23 /* TrackpadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackpadTests.swift; sourceTree = "<group>"; };
+		37B9E2151A9E966D007169F4 /* QTouchposeApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTouchposeApplication.h; sourceTree = "<group>"; };
+		37B9E2161A9E966D007169F4 /* QTouchposeApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTouchposeApplication.m; sourceTree = "<group>"; };
+		37B9E2191A9E9788007169F4 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		37B9E21B1A9E9826007169F4 /* Trackpad-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Trackpad-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,8 @@
 		3771897A1A8C481F00D6FA23 /* Trackpad */ = {
 			isa = PBXGroup;
 			children = (
+				37B9E2151A9E966D007169F4 /* QTouchposeApplication.h */,
+				37B9E2161A9E966D007169F4 /* QTouchposeApplication.m */,
 				3771897D1A8C481F00D6FA23 /* AppDelegate.swift */,
 				3771897F1A8C481F00D6FA23 /* ViewController.swift */,
 				377189811A8C481F00D6FA23 /* Main.storyboard */,
@@ -91,6 +99,8 @@
 			isa = PBXGroup;
 			children = (
 				3771897C1A8C481F00D6FA23 /* Info.plist */,
+				37B9E2191A9E9788007169F4 /* main.swift */,
+				37B9E21B1A9E9826007169F4 /* Trackpad-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -214,6 +224,8 @@
 			files = (
 				377189801A8C481F00D6FA23 /* ViewController.swift in Sources */,
 				3771897E1A8C481F00D6FA23 /* AppDelegate.swift in Sources */,
+				37B9E21A1A9E9788007169F4 /* main.swift in Sources */,
+				37B9E2171A9E966D007169F4 /* QTouchposeApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +354,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Trackpad/Trackpad-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -354,6 +367,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Trackpad/Trackpad-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
