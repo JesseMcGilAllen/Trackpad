@@ -67,7 +67,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
         instantiateTrackingCharacteristic()
         instantiateScreenSizeCharacteristic()
-        trackpadService.characteristics = [trackingCharacteristic, screenSizeCharacteristic]
+        trackpadService.characteristics = [screenSizeCharacteristic, trackingCharacteristic]
         
         return trackpadService
     }
@@ -143,8 +143,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
         
-        println("Sent?: \(didSendValue)")
-   
+           
     }
     
 }
