@@ -16,7 +16,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var beginTrackingCharacteristic : CBMutableCharacteristic!
     var trackingCharacteristic : CBMutableCharacteristic!
     var screenSizeCharacteristic : CBMutableCharacteristic!
-    var buttonTapCharacteristic : CBMutableCharacteristic!
+    var eventCharacteristic : CBMutableCharacteristic!
     
     var buttons : Array<UIButton>!
     
@@ -88,8 +88,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
         instantiateTrackingCharacteristic()
         instantiateBeginTrackingCharacteristic()
-        instantiateButtonTapCharacteristic()
-        trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, buttonTapCharacteristic]
+        instantiateEventCharacteristic()
+        trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, eventCharacteristic]
         
         return trackpadService
     }
@@ -141,12 +141,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
     }
     
-    func buttonTapCharacteristicUUID() -> CBUUID {
+    func eventCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
     }
     
-    func instantiateButtonTapCharacteristic() {
-        buttonTapCharacteristic = CBMutableCharacteristic(type: buttonTapCharacteristicUUID(),
+    func instantiateEventCharacteristic() {
+        eventCharacteristic = CBMutableCharacteristic(type: eventCharacteristicUUID(),
             properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
             value: nil,
             permissions: CBAttributePermissions.ReadEncryptionRequired)
@@ -201,7 +201,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         let data = sender.titleLabel!.text?.dataUsingEncoding(NSUTF8StringEncoding)
         
-        let didSendValue = peripheralManager.updateValue(data, forCharacteristic: buttonTapCharacteristic, onSubscribedCentrals: nil)
+        let didSendValue = peripheralManager.updateValue(data, forCharacteristic: eventCharacteristic, onSubscribedCentrals: nil)
     
     }
     
