@@ -17,6 +17,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var trackingCharacteristic : CBMutableCharacteristic!
     var screenSizeCharacteristic : CBMutableCharacteristic!
     
+    @IBOutlet weak var leftClickButton: UIButton!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -28,7 +29,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
+        let buttons = [leftClickButton as UIButton]
         
+        configureButtons(buttons)
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -39,6 +42,19 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func configureButtons(buttons : Array<UIButton>) {
+        
+        for button in buttons {
+            button.layer.borderColor = UIColor.blueColor().CGColor
+            button.layer.borderWidth = 1.0
+            
+            button.layer.cornerRadius = button.frame.size.height / 4
+            
+        }
+        
+        
     }
     
     // MARK: Required to conform to CBPeripheralManagerDelegate Protocol
@@ -82,8 +98,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     func instantiateBeginTrackingCharacteristic() {
         
         beginTrackingCharacteristic = CBMutableCharacteristic(type: beginTrackingCharacteristicUUID(),
-            properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
-            value: nil, permissions: CBAttributePermissions.ReadEncryptionRequired)
+                                                              properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
+                                                              value: nil,
+                                                              permissions: CBAttributePermissions.ReadEncryptionRequired)
     }
     
     func trackingCharacteristicUUID() -> CBUUID {
@@ -164,10 +181,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
             let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
             
         }
-        
-        
-        
-           
     }
     
 }
