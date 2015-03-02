@@ -16,6 +16,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var beginTrackingCharacteristic : CBMutableCharacteristic!
     var trackingCharacteristic : CBMutableCharacteristic!
     var screenSizeCharacteristic : CBMutableCharacteristic!
+    var buttonTapCharacteristic : CBMutableCharacteristic!
+    
+    var buttons : Array<UIButton>!
     
     @IBOutlet weak var leftClickButton: UIButton!
     
@@ -29,7 +32,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        let buttons = [leftClickButton as UIButton]
+        buttons = [leftClickButton as UIButton]
         
         configureButtons(buttons)
     }
@@ -127,7 +130,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
                                                            value: screenSizeData(),
                                                            permissions: CBAttributePermissions.ReadEncryptionRequired)
 
-
     }
     
     func screenSizeData() -> NSData {
@@ -136,6 +138,10 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         let screenString = NSStringFromCGRect(screenRect)
         
         return screenString.dataUsingEncoding(NSUTF8StringEncoding)!
+        
+    }
+    
+    func buttonTapCharacteristicUUID() -> CBUUID {
         
     }
     
@@ -182,6 +188,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
             
         }
     }
+    
+    @IBAction func leftClickButtonTapped(sender: UIButton) {
+        println("button tapped!")
+    
+    }
+    
     
 }
 
