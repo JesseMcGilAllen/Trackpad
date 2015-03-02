@@ -87,9 +87,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
         instantiateTrackingCharacteristic()
-        instantiateScreenSizeCharacteristic()
         instantiateBeginTrackingCharacteristic()
-        trackpadService.characteristics = [screenSizeCharacteristic, beginTrackingCharacteristic, trackingCharacteristic]
+        instantiateButtonTapCharacteristic()
+        trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, buttonTapCharacteristic]
         
         return trackpadService
     }
@@ -142,7 +142,14 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     }
     
     func buttonTapCharacteristicUUID() -> CBUUID {
-        
+        return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
+    }
+    
+    func instantiateButtonTapCharacteristic() {
+        buttonTapCharacteristic = CBMutableCharacteristic(type: buttonTapCharacteristicUUID(),
+            properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
+            value: nil,
+            permissions: CBAttributePermissions.ReadEncryptionRequired)
     }
     
     // MARK: Peripheral Manager
@@ -191,6 +198,10 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     @IBAction func leftClickButtonTapped(sender: UIButton) {
         println("button tapped!")
+        
+        let data = sender.titleLabel!.text?.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let didSendValue = peripheralManager.updateValue(data, forCharacteristic: buttonTapCharacteristic, onSubscribedCentrals: nil)
     
     }
     
