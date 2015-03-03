@@ -217,7 +217,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
                 sendButtonClick(button.text!)
             }
         }
-    }
+    }   
     
     
     
