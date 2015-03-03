@@ -197,7 +197,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     }
     
     @IBAction func leftClickButtonTapped(sender: UIButton) {
-        println("button tapped!")
         
         let data = sender.titleLabel!.text?.dataUsingEncoding(NSUTF8StringEncoding)
         
@@ -205,6 +204,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     }
     
-    
 }
+
+// Comment
 
