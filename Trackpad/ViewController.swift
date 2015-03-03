@@ -23,6 +23,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     @IBOutlet weak var leftClick: UILabel!
     @IBOutlet weak var rightClick: UILabel!
+    @IBOutlet weak var doubleClick: UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -34,7 +35,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        buttons = [leftClick, rightClick]
+        buttons = [leftClick, rightClick, doubleClick]
         
         configureButtons(buttons)
     }
