@@ -18,9 +18,11 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var screenSizeCharacteristic : CBMutableCharacteristic!
     var eventCharacteristic : CBMutableCharacteristic!
     
-    var buttons : Array<UIButton>!
+    var buttons : Array<UILabel>!
     
-    @IBOutlet weak var leftClickButton: UIButton!
+    
+    @IBOutlet weak var leftClick: UILabel!
+    @IBOutlet weak var rightClick: UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -32,7 +34,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        buttons = [leftClickButton as UIButton]
+        buttons = [leftClick, rightClick]
         
         configureButtons(buttons)
     }
@@ -47,12 +49,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func configureButtons(buttons : Array<UIButton>) {
+    func configureButtons(buttons : Array<UILabel>) {
         
         for button in buttons {
             button.layer.borderColor = UIColor.blueColor().CGColor
             button.layer.borderWidth = 1.0
-            
+            button.textColor = UIColor.blueColor()
             button.layer.cornerRadius = button.frame.size.height / 4
             
         }
@@ -196,13 +198,28 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         }
     }
     
-    @IBAction func leftClickButtonTapped(sender: UIButton) {
+    func sendButtonClick(title : String) {
         
-        let data = sender.titleLabel!.text?.dataUsingEncoding(NSUTF8StringEncoding)
-        
+        let data = title.dataUsingEncoding(NSUTF8StringEncoding)
         let didSendValue = peripheralManager.updateValue(data, forCharacteristic: eventCharacteristic, onSubscribedCentrals: nil)
-    
+
     }
+    
+   
+    @IBAction func tapDetected(sender: UITapGestureRecognizer) {
+        
+        let location = sender.locationInView(self.view)
+        
+        for button in buttons {
+            
+            if CGRectContainsPoint(button.frame, location) {
+                
+                sendButtonClick(button.text!)
+            }
+        }
+    }
+    
+    
     
 }
 
