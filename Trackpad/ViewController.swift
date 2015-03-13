@@ -90,70 +90,40 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         
         var trackpadService = CBMutableService(type: trackpadServiceUUID(), primary: true)
-        instantiateTrackingCharacteristic()
-        instantiateBeginTrackingCharacteristic()
+        trackingCharacteristic = characteristicWithUUID(trackingCharacteristicUUID())
+        beginTrackingCharacteristic = characteristicWithUUID(beginTrackingCharacteristicUUID())
+        eventCharacteristic = characteristicWithUUID(eventCharacteristicUUID())
         instantiateEventCharacteristic()
         trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, eventCharacteristic]
         
         return trackpadService
     }
     
+    func characteristicWithUUID(uuid : CBUUID) -> CBMutableCharacteristic {
+        
+        return CBMutableCharacteristic(type: uuid,
+            properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
+            value: nil,
+            permissions: CBAttributePermissions.ReadEncryptionRequired)
+    }
+    
     func beginTrackingCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "E0A13890-5CAB-4763-863C-B639132CE144")
     }
     
-    func instantiateBeginTrackingCharacteristic() {
-        
-        beginTrackingCharacteristic = CBMutableCharacteristic(type: beginTrackingCharacteristicUUID(),
-                                                              properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
-                                                              value: nil,
-                                                              permissions: CBAttributePermissions.ReadEncryptionRequired)
-    }
+    
     
     func trackingCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "7754BF4E-9BB5-4719-9604-EE48A565F09C")
     }
     
-    func instantiateTrackingCharacteristic() {
-        
-        trackingCharacteristic = CBMutableCharacteristic(type: trackingCharacteristicUUID(),
-                                                             properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
-                                                             value: nil,
-                                                             permissions: CBAttributePermissions.ReadEncryptionRequired)
-        
-    }
     
     func screenSizeCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "92241F88-3A7E-4DEA-8DE5-12066D690250")
     }
     
-    func instantiateScreenSizeCharacteristic() {
-        
-        screenSizeCharacteristic = CBMutableCharacteristic(type: screenSizeCharacteristicUUID(),
-                                                           properties: CBCharacteristicProperties.Read,
-                                                           value: screenSizeData(),
-                                                           permissions: CBAttributePermissions.ReadEncryptionRequired)
-
-    }
-    
-    func screenSizeData() -> NSData {
-        
-        let screenRect = UIScreen.mainScreen().bounds
-        let screenString = NSStringFromCGRect(screenRect)
-        
-        return screenString.dataUsingEncoding(NSUTF8StringEncoding)!
-        
-    }
-    
     func eventCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
-    }
-    
-    func instantiateEventCharacteristic() {
-        eventCharacteristic = CBMutableCharacteristic(type: eventCharacteristicUUID(),
-            properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
-            value: nil,
-            permissions: CBAttributePermissions.ReadEncryptionRequired)
     }
     
     // MARK: Peripheral Manager
