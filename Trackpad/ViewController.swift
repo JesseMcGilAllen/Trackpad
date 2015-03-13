@@ -15,8 +15,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     var beginTrackingCharacteristic : CBMutableCharacteristic!
     var trackingCharacteristic : CBMutableCharacteristic!
-    var screenSizeCharacteristic : CBMutableCharacteristic!
     var eventCharacteristic : CBMutableCharacteristic!
+    var controlCharacteristic : CBMutableCharacteristic!
     
     var buttons : Array<UILabel>!
     
@@ -82,10 +82,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     // MARK: Services & Characteristics
     
-    func trackpadServiceUUID() -> CBUUID {
-        return CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
-    }
-    
     func trackpadService() -> CBMutableService {
         
         
@@ -93,7 +89,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         trackingCharacteristic = characteristicWithUUID(trackingCharacteristicUUID())
         beginTrackingCharacteristic = characteristicWithUUID(beginTrackingCharacteristicUUID())
         eventCharacteristic = characteristicWithUUID(eventCharacteristicUUID())
-        instantiateEventCharacteristic()
+        controlCharacteristic = characteristicWithUUID(controlCharacteristicUUID())
         trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, eventCharacteristic]
         
         return trackpadService
@@ -105,6 +101,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
             properties: CBCharacteristicProperties.Read | CBCharacteristicProperties.NotifyEncryptionRequired,
             value: nil,
             permissions: CBAttributePermissions.ReadEncryptionRequired)
+    }
+    
+    // MARK: CBUUID creation
+    
+    func trackpadServiceUUID() -> CBUUID {
+        return CBUUID(string: "AB8A3096-046C-49DD-8709-0361EC31EFED")
     }
     
     func beginTrackingCharacteristicUUID() -> CBUUID {
@@ -124,6 +126,10 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func eventCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
+    }
+    
+    func controlCharacteristicUUID() -> CBUUID {
+        return CBUUID(string: "0B8A8D8A-80B0-4042-AE95-0B6B75F17F9D")
     }
     
     // MARK: Peripheral Manager
