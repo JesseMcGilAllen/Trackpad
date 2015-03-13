@@ -24,6 +24,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     @IBOutlet weak var leftClick: UILabel!
     @IBOutlet weak var rightClick: UILabel!
     @IBOutlet weak var doubleClick: UILabel!
+    @IBOutlet weak var controlButton: UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
