@@ -36,7 +36,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        buttons = [leftClick, rightClick, doubleClick]
+        buttons = [leftClick, rightClick, doubleClick, controlButton]
         
         configureButtons(buttons)
     }
