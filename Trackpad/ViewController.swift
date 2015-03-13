@@ -185,6 +185,12 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
             if CGRectContainsPoint(button.frame, location) {
                 
                 sendButtonClick(button.text!)
+                
+                if button.text! == "control" {
+                    button.text = "release control"
+                } else if button.text! == "release control" {
+                    button.text = "control"
+                }
             }
         }
     }   
