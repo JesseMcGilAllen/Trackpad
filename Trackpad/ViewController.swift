@@ -89,7 +89,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         trackingCharacteristic = characteristicWithUUID(trackingCharacteristicUUID())
         beginTrackingCharacteristic = characteristicWithUUID(beginTrackingCharacteristicUUID())
         eventCharacteristic = characteristicWithUUID(eventCharacteristicUUID())
-        controlCharacteristic = characteristicWithUUID(controlCharacteristicUUID())
         trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, eventCharacteristic]
         
         return trackpadService
@@ -128,9 +127,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
     }
     
-    func controlCharacteristicUUID() -> CBUUID {
-        return CBUUID(string: "0B8A8D8A-80B0-4042-AE95-0B6B75F17F9D")
-    }
     
     // MARK: Peripheral Manager
     
