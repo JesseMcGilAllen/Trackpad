@@ -119,10 +119,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     }
     
     
-    func screenSizeCharacteristicUUID() -> CBUUID {
-        return CBUUID(string: "92241F88-3A7E-4DEA-8DE5-12066D690250")
-    }
-    
     func eventCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
     }
