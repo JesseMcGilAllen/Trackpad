@@ -16,7 +16,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var beginTrackingCharacteristic : CBMutableCharacteristic!
     var trackingCharacteristic : CBMutableCharacteristic!
     var eventCharacteristic : CBMutableCharacteristic!
-    var controlCharacteristic : CBMutableCharacteristic!
+   
     
     var buttons : Array<UILabel>!
     
@@ -24,8 +24,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     @IBOutlet weak var leftClick: UILabel!
     @IBOutlet weak var rightClick: UILabel!
     @IBOutlet weak var doubleClick: UILabel!
-    @IBOutlet weak var controlButton: UILabel!
-    
+        
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -36,7 +35,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        buttons = [leftClick, rightClick, doubleClick, controlButton]
+        buttons = [leftClick, rightClick, doubleClick]
         
         configureButtons(buttons)
     }
@@ -186,11 +185,6 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
                 
                 sendButtonClick(button.text!)
                 
-                if button.text! == "control" {
-                    button.text = "release control"
-                } else if button.text! == "release control" {
-                    button.text = "control"
-                }
             }
         }
     }   
