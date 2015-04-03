@@ -170,7 +170,9 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func sendButtonClick(title : String) {
         
+        
         let data = title.dataUsingEncoding(NSUTF8StringEncoding)
+        
         let didSendValue = peripheralManager.updateValue(data, forCharacteristic: eventCharacteristic, onSubscribedCentrals: nil)
 
     }
@@ -183,13 +185,27 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         for button in buttons {
             
             if CGRectContainsPoint(button.frame, location) {
-                
-                sendButtonClick(button.text!)
+            
+                // if the button that got tapped tag is 91 send to the processScrolling func
+                // else go to sendButtonClick func
+                button.tag == 91 ? processScrolling() : sendButtonClick(button.text!)
                 
             }
         }
-    }   
+    }
     
+    
+    // gets label with tag 91
+    // flips text to begin/end scrolling depending on current text
+    // changes button color depending on text
+    func processScrolling() {
+        
+    }
+    
+    func scrollingEnabled() -> Bool {
+        
+        return false
+    }
     
     
 }

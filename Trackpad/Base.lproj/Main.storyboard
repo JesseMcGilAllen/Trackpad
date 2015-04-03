@@ -39,7 +39,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Begin Scrolling" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cI1-8Y-bim">
+                            <label opaque="NO" userInteractionEnabled="NO" tag="91" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Begin Scrolling" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cI1-8Y-bim">
                                 <rect key="frame" x="365" y="20" width="200" height="129"/>
                                 <color key="tintColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
