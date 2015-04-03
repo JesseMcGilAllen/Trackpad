@@ -54,14 +54,30 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     func configureButtons(buttons : Array<UILabel>) {
         
         for button in buttons {
-            button.layer.borderColor = UIColor.blueColor().CGColor
-            button.layer.borderWidth = 1.0
-            button.textColor = UIColor.blueColor()
-            button.layer.cornerRadius = button.frame.size.height / 4
+            
+            configureButtonStateDefault(button)
             
         }
         
+    }
+    
+    func configureButtonStateDefault(button : UILabel) {
         
+        button.layer.borderColor = UIColor.blueColor().CGColor
+        button.layer.backgroundColor = UIColor.whiteColor().CGColor
+        button.layer.borderWidth = 1.0
+        
+        button.textColor = UIColor.blueColor()
+        button.layer.cornerRadius = button.frame.size.height / 4
+    }
+    
+    func configureButtonStateSelected(button : UILabel) {
+        button.layer.borderColor = UIColor.whiteColor().CGColor
+        button.layer.backgroundColor = UIColor.blueColor().CGColor
+        button.layer.borderWidth = 1.0
+        
+        button.textColor = UIColor.whiteColor()
+        button.layer.cornerRadius = button.frame.size.height / 4
     }
     
     // MARK: Required to conform to CBPeripheralManagerDelegate Protocol
@@ -200,11 +216,36 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     // changes button color depending on text
     func processScrolling() {
         
+        let label = scrolling.text
+        let selectedLabel = "end scrolling"
+        let defaultLabel = "begin scrolling"
+        
+        if label == defaultLabel {
+            
+            configureButtonStateSelected(scrolling)
+            scrolling.text = selectedLabel
+            
+        } else {
+            
+            configureButtonStateDefault(scrolling)
+            scrolling.text = defaultLabel
+            
+        }
+        
     }
     
     func scrollingEnabled() -> Bool {
         
-        return false
+        let label = scrolling.text
+        let defaultLabel = "begin scrolling"
+        if label == defaultLabel {
+            
+            return false
+        
+        } else {
+            
+            return true
+        }
     }
     
     
