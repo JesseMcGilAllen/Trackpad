@@ -24,6 +24,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     @IBOutlet weak var leftClick: UILabel!
     @IBOutlet weak var rightClick: UILabel!
     @IBOutlet weak var doubleClick: UILabel!
+    @IBOutlet weak var scrolling: UILabel!
         
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -35,7 +36,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
         
-        buttons = [leftClick, rightClick, doubleClick]
+        buttons = [leftClick, rightClick, doubleClick, scrolling]
         
         configureButtons(buttons)
     }
