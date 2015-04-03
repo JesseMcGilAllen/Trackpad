@@ -16,7 +16,7 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     var beginTrackingCharacteristic : CBMutableCharacteristic!
     var trackingCharacteristic : CBMutableCharacteristic!
     var eventCharacteristic : CBMutableCharacteristic!
-   
+    var scrollingCharacteristic : CBMutableCharacteristic!
     
     var buttons : Array<UILabel>!
     
@@ -105,7 +105,11 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
         trackingCharacteristic = characteristicWithUUID(trackingCharacteristicUUID())
         beginTrackingCharacteristic = characteristicWithUUID(beginTrackingCharacteristicUUID())
         eventCharacteristic = characteristicWithUUID(eventCharacteristicUUID())
-        trackpadService.characteristics = [beginTrackingCharacteristic, trackingCharacteristic, eventCharacteristic]
+        scrollingCharacteristic = characteristicWithUUID(scrollingCharacteristicUUID())
+        trackpadService.characteristics = [beginTrackingCharacteristic,
+                                           trackingCharacteristic,
+                                           eventCharacteristic,
+                                           scrollingCharacteristic]
         
         return trackpadService
     }
@@ -137,6 +141,10 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
     
     func eventCharacteristicUUID() -> CBUUID {
         return CBUUID(string: "DCF9D966-06D7-4663-8811-3E1A0B75EFB4")
+    }
+    
+    func scrollingCharacteristicUUID() -> CBUUID {
+        return CBUUID(string: "F2021764-206F-46D5-8AD9-F710A484FAEC")
     }
     
     
@@ -202,16 +210,15 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
             
             if CGRectContainsPoint(button.frame, location) {
             
-                // if the button that got tapped tag is 91 send to the processScrolling func
+                // if scrolling button that got tapped send to the processScrolling func
                 // else go to sendButtonClick func
-                button.tag == 91 ? processScrolling() : sendButtonClick(button.text!)
+                button == scrolling ? processScrolling() : sendButtonClick(button.text!)
                 
             }
         }
     }
     
     
-    // gets label with tag 91
     // flips text to begin/end scrolling depending on current text
     // changes button color depending on text
     func processScrolling() {
