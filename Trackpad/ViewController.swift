@@ -186,8 +186,15 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate {
             let didSendValue = peripheralManager.updateValue(data, forCharacteristic: beginTrackingCharacteristic, onSubscribedCentrals: nil)
             
         } else {
+            if scrollingEnabled() {
+                
+                let didSendValue = peripheralManager.updateValue(data, forCharacteristic: scrollingCharacteristic, onSubscribedCentrals: nil)
             
-            let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
+            } else {
+                
+                let didSendValue = peripheralManager.updateValue(data, forCharacteristic: trackingCharacteristic, onSubscribedCentrals: nil)
+            }
+            
             
         }
     }
